@@ -1,0 +1,45 @@
+.page.light {
+    /* Background */
+    --primary-background: #ffffff;
+    --light-background: #f8f8f8;
+    --page-header-background: #ffffff;
+    --page-aside-background: #ffffff;
+
+    /* Text */
+    --primary-text-color: #000000;
+    --secondary-text-color: #585858;
+    --light-text-color: #adadad;
+
+    /* Line */
+    --line-color: #e1e3e7;
+    --highlight-line-color: #000000;
+
+    /* Button */
+    --primary-button-background: #000000;
+    --outline-button-color: #000000;
+    --lowkey-button-background: #e0e0e0;
+    --lowkey-button-text-color: #5a5a5a;
+}
+
+.page.dark {
+    /* Background */
+    --primary-background: #222222;
+    --light-background: #1f1f1f;
+    --page-header-background: #222222;
+    --page-aside-background: #2e2e2e;
+
+    /* Text */
+    --primary-text-color: #b1b1b1;
+    --secondary-text-color: #585858;
+    --light-text-color: #656565;
+
+    /* Line */
+    --line-color: #383838;
+    --highlight-line-color: #555555;
+
+    /* Button */
+    --primary-button-background: #555555;
+    --outline-button-color: #555555;
+    --lowkey-button-background: #3b3b3b;
+    --lowkey-button-text-color: #898989;
+}
