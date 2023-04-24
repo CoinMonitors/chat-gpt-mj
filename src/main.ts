@@ -4,6 +4,7 @@ import { registerStore } from '@/store';
 import App from './App.vue';
 import router from '@/router';
 import '@/styles/index.less';
+import '@/assets/iconfont/iconfont.css';
 
 const store = createPinia();
 const app = createApp(App);
