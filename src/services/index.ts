@@ -1,8 +1,15 @@
 import service from '@/services/request';
-// import type { ResultData } from '@/services/types';
+interface Result {
+    code: number;
+    msg: string;
+}
 
+// 请求响应参数，包含data
+export interface ResultData<T> extends Result {
+    data: T;
+}
 // 常用方法封装
-export function get<T>(url: string, params?: object): Promise<T> {
+export function get<T>(url: string, params?: object): Promise<ResultData<T>> {
     return service.get(url, params);
 }
 

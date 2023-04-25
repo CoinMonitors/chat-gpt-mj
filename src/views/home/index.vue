@@ -1,42 +1,42 @@
 <template>
-    <div class="app-page-home">
-        <el-row class="mb-4">
-            <el-button>Default</el-button>
-            <el-button type="primary">Primary</el-button>
-            <el-button type="success">Success</el-button>
-            <el-button type="info">Info</el-button>
-            <el-button type="warning">Warning</el-button>
-            <el-button type="danger">Danger</el-button>
-        </el-row>
-
-        <el-row class="mb-4">
-            <el-button plain>Plain</el-button>
-            <el-button type="primary" plain>Primary</el-button>
-            <el-button type="success" plain>Success</el-button>
-            <el-button type="info" plain>Info</el-button>
-            <el-button type="warning" plain>Warning</el-button>
-            <el-button type="danger" plain>Danger</el-button>
-        </el-row>
-
-        <el-row class="mb-4">
-            <el-button round>Round</el-button>
-            <el-button type="primary" round>Primary</el-button>
-            <el-button type="success" round>Success</el-button>
-            <el-button type="info" round>Info</el-button>
-            <el-button type="warning" round>Warning</el-button>
-            <el-button type="danger" round>Danger</el-button>
-        </el-row>
+    <div id="app-page-home">
+        <header class="app-header con">
+            <span>logo</span>
+            <span>小程序</span>
+            <span>说明</span>
+            <span>充值</span>
+            <span>Login</span>
+        </header>
+        <main>
+            <div class="text-info-wrap">
+                <h1>想象这样一个场所……</h1>
+                <div class="text-medium">
+                    在这里，您可以加入校园俱乐部、游戏群组，或是世界级艺术社区。在这里，您也能邀三五好友一起共度欢乐时光。在这里，您可以轻而易举地每日谈天说地，时常消遣娱乐。
+                </div>
+            </div>
+            <div class="opt-content-wrap">
+                <div class="start-create button-large" @click="handleGoCreation">开始创作</div>
+                <div class="image-square button-large">画廊</div>
+            </div>
+            <div class="main-background-image">
+                <img class="backgroundImages" src="../../assets/svgs/home-main.svg" alt="" />
+                <img class="foregroundLeft" src="../../assets/svgs/home-left.svg" alt="" />
+                <img class="foregroundRight" src="../../assets/svgs/home-right.svg" alt="" />
+            </div>
+        </main>
     </div>
 </template>
 
 <script setup lang="ts">
-const route = useRoute();
+const router = useRouter();
 
-onBeforeMount(() => {
-    console.log(route);
-});
+const handleGoCreation = () => {
+    router.push({
+        path: 'start-creation'
+    });
+};
 </script>
 
 <style lang="less" scoped>
-@import './index.less';
+@import '../../styles/home/index.less';
 </style>

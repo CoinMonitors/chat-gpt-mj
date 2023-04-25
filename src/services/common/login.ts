@@ -1,19 +1,7 @@
-import { post } from '@/services/index';
-export interface TUsersInfo {
-    id: number;
-    name: string;
-    token: string;
-}
-
-type IReturn = TUsersInfo;
+import { post, ResultData } from '@/services/index';
 
 export namespace nsCommonLoginPost {
-    interface IParams {
-        name: string;
-        password: string;
-    }
-
-    export const request = async (params: IParams) => {
-        return post<IReturn>('/api/login', params);
+    export const request = async () => {
+        return post<ResultData<any>>('/api/v1/model/modelDetails/openjourney');
     };
 }
