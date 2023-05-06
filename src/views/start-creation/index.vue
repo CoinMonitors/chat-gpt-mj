@@ -8,11 +8,29 @@
 -->
 <template>
     <div class="start-creation">
-        <div v-for="(item, index) in modelParams" :key="index">
-            <span class="demonstration">{{ item.nameZh }}</span>
-            <el-slider v-model="bili" :max="20" />
-            <component :is="`el-${item.controlType}`" v-model="bili" />
-        </div>
+        <el-form :model="resParams">
+            <el-form-item
+                v-for="(item, index) in modelParam"
+                :key="index"
+                :label="item.nameZh"
+                :label-position="'top'"
+                class="create-item"
+                :prop="resParams[item.id]"
+            >
+                <el-input v-if="item.controlType == 'input'" v-model="resParams[item.id]" :max="Number(item.maximum)" />
+                <el-slider
+                    v-else-if="item.controlType == 'slider'"
+                    v-model="resParams[item.id]"
+                    :max="Number(item.maximum)"
+                />
+                <el-select v-else-if="item.controlType == 'select'" v-model="resParams[item.id]">
+                    <el-option v-for="(item, index) in item.data" :key="index" :label="item" :value="item" />
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm()">Submit</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -20,19 +38,38 @@
 import { nsCommonLoginPost } from '@/services/common/login';
 import creation from '@/constant/creation';
 
-const bili = ref(1);
-const modelParams = ref([]);
+const resParams = ref<{
+    [key: string]: any;
+}>({});
+const modelParam = ref([]);
 const getData = async () => {
     const res = await nsCommonLoginPost.request();
     if (res.code === 200) {
-        console.log(res.data, creation); //jing-log
-        modelParams.value = res.data.modelParams;
+        let { modelParams } = res.data;
+        console.log(res.data, creation, modelParams); //jing-log
+        modelParam.value = modelParams;
+        modelParams.forEach((item: { [key: string]: any }) => {
+            resParams.value[item.id] = 2;
+        });
     }
 };
 
 onMounted(() => {
     getData();
 });
+
+const submitForm = () => {
+    console.log(resParams.value, 'res');
+};
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.start-creation {
+    width: 60%;
+    min-width: 600px;
+    margin: 40px auto;
+}
+.create-item {
+    width: 100%;
+}
+</style>
