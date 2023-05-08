@@ -1,4 +1,5 @@
 import service from '@/services/request';
+import { config } from 'process';
 interface Result {
     code: number;
     msg: string;
@@ -13,8 +14,8 @@ export function get<T>(url: string, params?: object): Promise<ResultData<T>> {
     return service.get(url, params);
 }
 
-export function post<T>(url: string, params?: object): Promise<T> {
-    return service.post(url, params);
+export function post<T>(url: string, params?: object, config?: object): Promise<T> {
+    return service.post(url, params, config);
 }
 
 export function put<T>(url: string, params?: object): Promise<T> {

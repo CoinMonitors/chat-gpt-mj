@@ -8,7 +8,7 @@
 -->
 <template>
     <div class="start-creation">
-        <el-form :model="resParams">
+        <el-form :model="resParams" v-if="modelParam.length > 0">
             <el-form-item
                 v-for="(item, index) in modelParam"
                 :key="index"
@@ -49,7 +49,7 @@ const getData = async () => {
         console.log(res.data, creation, modelParams); //jing-log
         modelParam.value = modelParams;
         modelParams.forEach((item: { [key: string]: any }) => {
-            resParams.value[item.id] = 2;
+            resParams.value[item.id] = '2';
         });
     }
 };
@@ -58,8 +58,14 @@ onMounted(() => {
     getData();
 });
 
-const submitForm = () => {
-    console.log(resParams.value, 'res');
+const submitForm = async () => {
+    const res = await nsCommonLoginPost.creteDrawPost({
+        modelId: 'openjourney',
+        modelParams: resParams.value
+    });
+    console.log(resParams.value, res, 'res');
+    const imgRes = await nsCommonLoginPost.getDrawResult(res.data.taskId);
+    console.log(imgRes, 'img');
 };
 </script>
 
