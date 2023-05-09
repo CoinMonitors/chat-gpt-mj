@@ -38,6 +38,10 @@
 import { nsCommonLoginPost } from '@/services/common/login';
 import creation from '@/constant/creation';
 
+const props = defineProps({
+    changeTaskId: Function
+});
+
 const resParams = ref<{
     [key: string]: any;
 }>({});
@@ -64,8 +68,9 @@ const submitForm = async () => {
         modelParams: resParams.value
     });
     console.log(resParams.value, res, 'res');
-    const imgRes = await nsCommonLoginPost.getDrawResult(res.data.taskId);
-    console.log(imgRes, 'img');
+    props.changeTaskId(res.data.taskId);
+    // const imgRes = await nsCommonLoginPost.getDrawResult(res.data.taskId);
+    // console.log(imgRes, 'img');
 };
 </script>
 

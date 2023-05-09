@@ -8,14 +8,19 @@
 -->
 <template>
     <div class="create">
-        <CreateForm class="left" />
-        <CreateResult class="right" />
+        <CreateForm class="left" :changeTaskId="changeTaskId" />
+        <CreateResult class="right" :taskId="taskId" v-if="taskId" />
     </div>
 </template>
 
 <script setup lang="ts">
 import CreateForm from './createForm.vue';
 import CreateResult from './createResult.vue';
+
+const taskId = ref<string>('');
+const changeTaskId = (value: string) => {
+    taskId.value = value;
+};
 </script>
 
 <style scoped lang="less">
