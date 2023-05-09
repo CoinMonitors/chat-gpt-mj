@@ -6,7 +6,7 @@ const config: CreateAxiosDefaults = {
     timeout: RequestEnums.TIMEOUT,
     // 跨域时候允许携带凭证
     withCredentials: true,
-    baseURL: 'http://openai.i1314i.com:8080/'
+    baseURL: import.meta.env.VITE_APP_API_BASE_URL
 };
 
 // 实例化axios
