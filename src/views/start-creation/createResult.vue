@@ -37,5 +37,6 @@ watchEffect(() => {
 <style scoped lang="less">
 .result {
     padding-left: 50px;
+    padding-top: 50px;
 }
 </style>

@@ -27,7 +27,7 @@ const changeTaskId = (value: string) => {
 .create {
     display: flex;
     height: 100%;
-    padding: 40px;
+    padding: 0 40px;
     background-color: #363634;
     .left {
         width: 60%;

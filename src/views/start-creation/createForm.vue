@@ -139,7 +139,11 @@ const submitForm = async () => {
 }
 .params {
     width: 30%;
+    height: 100%;
+    padding: 15px;
     margin-left: 50px;
+    box-sizing: border-box;
+    background-color: #5a5a56;
     :deep(.el-form-item__label) {
         color: #ffffff;
     }
