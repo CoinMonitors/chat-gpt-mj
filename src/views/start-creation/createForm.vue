@@ -90,7 +90,7 @@ const submitForm = async () => {
         modelId: 'openjourney',
         modelParams: { ...resParams.value, ...baseData.value }
     });
-    props.changeTaskId(res.data.taskId);
+    props.changeTaskId && props.changeTaskId(res.data.taskId);
     console.log(resParams.value, baseData.value, 'res');
 };
 </script>
