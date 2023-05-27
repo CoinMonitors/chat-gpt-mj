@@ -5,7 +5,7 @@
             <span>小程序</span>
             <span>说明</span>
             <span>充值</span>
-            <span>Login</span>
+            <span @click="handleGoLogin">Login</span>
         </header>
         <main>
             <div class="text-info-wrap">
@@ -33,6 +33,12 @@ const router = useRouter();
 const handleGoCreation = () => {
     router.push({
         path: 'start-creation'
+    });
+};
+
+const handleGoLogin = () => {
+    router.push({
+        path: 'user-login'
     });
 };
 </script>

@@ -1,6 +1,5 @@
 import service from '@/services/request';
-import { config } from 'process';
-interface Result {
+export interface Result {
     code: number;
     msg: string;
 }

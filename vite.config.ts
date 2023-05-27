@@ -4,7 +4,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import AutoImport from 'unplugin-auto-import/vite';
 import { join, resolve } from 'path';
 import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
@@ -15,12 +14,9 @@ export default defineConfig({
             dts: 'src/auto-imports.d.ts',
             eslintrc: {
                 enabled: true
-            },
-            resolvers: [ElementPlusResolver()]
+            }
         }),
-        Components({
-            resolvers: [ElementPlusResolver()]
-        })
+        Components({})
     ],
     resolve: {
         alias: {
@@ -28,14 +24,7 @@ export default defineConfig({
         }
     },
     server: {
-        open: true,
-        proxy: {
-            '/api/': {
-                target: 'http://localhost:5173/',
-                changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, '')
-            }
-        }
+        open: true
     },
     publicDir: false,
     build: {

@@ -28,7 +28,8 @@ module.exports = {
     plugins: ['vue', '@typescript-eslint', 'prettier'],
     rules: {
         'vue/multi-word-component-names': OFF, // 关闭限制组件名称必须是多个单词 https://eslint.vuejs.org/rules/multi-word-component-names.html
-        '@typescript-eslint/no-namespace': OFF
+        '@typescript-eslint/no-namespace': OFF,
+        '@typescript-eslint/no-explicit-any': OFF
     }
 };
 

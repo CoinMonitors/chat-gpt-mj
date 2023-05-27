@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { nsCommonLoginPost } from '@/services/common/login';
+import { nsCommonModelPost } from '@/services/common/login';
 import creation from '@/constant/creation';
 
 const props = defineProps({
@@ -70,7 +70,7 @@ const baseData = ref<{
 }>({});
 const modelParam = ref([]);
 const getData = async () => {
-    const res = await nsCommonLoginPost.request();
+    const res = await nsCommonModelPost.request();
     if (res.code === 200) {
         let { modelParams } = res.data;
         console.log(res.data, creation, modelParams); //jing-log
@@ -86,7 +86,7 @@ onMounted(() => {
 });
 
 const submitForm = async () => {
-    const res = await nsCommonLoginPost.creteDrawPost({
+    const res = await nsCommonModelPost.creteDrawPost({
         modelId: 'openjourney',
         modelParams: { ...resParams.value, ...baseData.value }
     });

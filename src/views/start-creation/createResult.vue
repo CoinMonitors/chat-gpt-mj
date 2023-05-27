@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { nsCommonLoginPost } from '@/services/common/login';
+import { nsCommonModelPost } from '@/services/common/login';
 
 const props = defineProps({
     taskId: String
@@ -24,7 +24,7 @@ watchEffect(() => {
     // console.log(newTaskId, oldData, '111');
     if (!props.taskId) return;
     let timer = setInterval(async () => {
-        const res = await nsCommonLoginPost.getDrawResult(props.taskId);
+        const res = await nsCommonModelPost.getDrawResult(props.taskId);
         console.log(res);
         if (res.data.imgList && res.data.imgList.length > 0) {
             imgList.value = res.data.imgList;
