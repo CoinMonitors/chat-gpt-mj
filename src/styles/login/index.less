@@ -1,0 +1,115 @@
+.login-main-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .home-bg {
+        background-image: url('@/assets/images/login-background.png');
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background-repeat: no-repeat;
+        background-size: 1920px 1080px;
+        background-position: 50%;
+    }
+
+    .login-body {
+        .show-user-opt-wrap {
+            margin: -65px 0 0 480px;
+            position: relative;
+            box-sizing: border-box;
+            width: 420px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 12px 0 rgba(195, 109, 24, 0.06);
+        }
+    }
+}
+
+// 登录卡片
+.user-login-wrap {
+    .login-form-title {
+        line-height: 1;
+        font-size: 28px;
+        font-weight: 500;
+        color: #4c4c4c;
+        margin-bottom: 40px;
+    }
+}
+
+.el-form {
+    margin-bottom: 20px;
+}
+
+.other-opt {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0 10px;
+    span {
+        display: block;
+        line-height: 1;
+        font-size: 14px;
+        font-weight: 400;
+        color: #888;
+        cursor: pointer;
+        &:hover {
+            color: @main-color;
+        }
+    }
+}
+.login-button {
+    height: 44px;
+    background: @main-color;
+    border-radius: 8px;
+    line-height: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+// 注册卡片
+.user-register-wrap {
+    .register-form-title {
+        line-height: 1;
+        font-size: 28px;
+        font-weight: 500;
+        color: #4c4c4c;
+        margin-bottom: 20px;
+    }
+    .text-info {
+        color: #888;
+    }
+}
+
+.form-view {
+    width: 100%;
+    height: 200px;
+}
+
+.form-item {
+    margin-top: 20px;
+}
+
+.form-operation {
+    height: 50px;
+    line-height: 50px;
+}
+
+.el-input-group__append button.el-button.is-disabled {
+    color: #c1c1c1 !important;
+}
+
+.el-form-item--large {
+    margin-bottom: 0;
+}

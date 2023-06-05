@@ -1,14 +1,14 @@
 <template>
     <div class="user-login-wrap">
-        <el-form size="large" ref="formCodeRef" :model="formCode" :rules="rulesCode">
-            <el-form-item prop="phone">
+        <div class="login-form-title">密码登录</div>
+        <el-form size="large" ref="ruleFormRef" :model="formCode" :rules="rulesCode">
+            <el-form-item prop="phoneNumber">
                 <el-input
                     class="form-item"
                     clearable
                     :prefix-icon="User"
-                    v-model="formCode.phone"
+                    v-model="formCode.phoneNumber"
                     placeholder="请输入手机号码"
-                    type="number"
                 ></el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -23,13 +23,21 @@
                 ></el-input>
             </el-form-item>
         </el-form>
+        <div class="other-opt">
+            <span @click="handleChangeLoginType">验证码登录</span>
+            <span>忘记密码</span>
+        </div>
+
+        <div class="login-button" @click="handleLogin">登录</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue';
-import type { FormRules } from 'element-plus';
-import { validMobile, validPassword } from '@/utils';
+import type { FormInstance, FormRules } from 'element-plus';
+import { validMobile } from '@/utils';
+import { nsUserLoginPost } from '@/services/login/login';
+
 const validPhone = (rule: any, value: string, callback: any) => {
     if (!value) {
         return callback(new Error('请输入电话号码'));
@@ -42,21 +50,36 @@ const validPhone = (rule: any, value: string, callback: any) => {
 const validPswd = (rule: any, value: string, callback: any) => {
     if (!value) {
         return callback(new Error('请输入密码'));
-    } else if (!validPassword(value)) {
-        return callback(new Error('请输入6~14位包含字母和数字的密码'));
     } else {
         callback();
     }
 };
 
+const ruleFormRef = ref<FormInstance>();
+const emit = defineEmits(['swich-login-type']);
+
 const formCode = ref({
-    phone: '',
+    phoneNumber: '',
     password: ''
 });
 const rulesCode = reactive<FormRules>({
-    phone: [{ required: true, trigger: 'blur', validator: validPhone }],
+    phoneNumber: [{ required: true, trigger: 'blur', validator: validPhone }],
     password: [{ required: true, trigger: 'blur', validator: validPswd }]
 });
-</script>
+const handleLogin = async () => {
+    const valid = await ruleFormRef.value?.validate();
+    if (!valid) return;
+    const parasm = {
+        ...formCode.value
+    };
+    const res = await nsUserLoginPost.request(parasm);
+    console.log(res);
+    if (res.code === 200) {
+        console.log(res);
+    }
+};
 
-<style lang="less" scoped></style>
+const handleChangeLoginType = () => {
+    emit('swich-login-type');
+};
+</script>
