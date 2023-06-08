@@ -30,6 +30,16 @@
             </el-form-item>
         </el-form>
         <el-form :model="resParams" v-if="modelParam.length > 0" class="params" :label-position="'top'">
+            <el-form-item label="模型">
+                <el-select v-model="selModelId" v-if="models.length" @change="handleModelChage">
+                    <el-option
+                        v-for="(item, index) in models"
+                        :key="index"
+                        :value="item.model_id"
+                        :label="item.model_name"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item
                 v-for="(item, index) in modelParam"
                 :key="index"
@@ -56,7 +66,16 @@
 
 <script setup lang="ts">
 import { nsCommonModelPost } from '@/services/common/login';
+import { creteDrawPost } from '@/services/create';
 import creation from '@/constant/creation';
+
+type modelType = {
+    model_name?: string;
+    model_id?: string;
+};
+type paramsType = {
+    [key: string]: any;
+};
 
 const props = defineProps({
     changeTaskId: Function
@@ -68,26 +87,49 @@ const resParams = ref<{
 const baseData = ref<{
     [key: string]: any;
 }>({});
-const modelParam = ref([]);
+const models = ref<modelType[]>([]);
+const selModelId = ref<string>('');
+const modelParam = ref<paramsType[]>([]);
 const getData = async () => {
-    const res = await nsCommonModelPost.request();
+    const res = await nsCommonModelPost.request(selModelId.value);
     if (res.code === 200) {
         let { modelParams } = res.data;
         console.log(res.data, creation, modelParams); //jing-log
-        modelParam.value = modelParams;
+        modelParam.value = fliterParams(modelParams);
         modelParams.forEach((item: { [key: string]: any }) => {
             resParams.value[item.id] = item.defaultValue;
         });
     }
 };
 
-onMounted(() => {
+// 获取所有模型
+const getModels = async () => {
+    const res = await creteDrawPost.getModels();
+    if (res.code == 200) {
+        models.value = res.data;
+        selModelId.value = res.data[0].model_id;
+    }
+    console.log(res, models, 'models');
+};
+
+// 去除基础属性
+const fliterParams = (arr: any[]) => {
+    return arr.filter((item: any) => item.id !== 'prompt' && item.id !== 'imgUrl' && item.id !== 'imgPrompt');
+};
+const handleModelChage = (value: string) => {
+    console.log(value);
+    getData();
+};
+
+onMounted(async () => {
+    await getModels();
     getData();
 });
 
 const submitForm = async () => {
+    console.log({ modelId: selModelId.value, modelParams: { ...resParams.value, ...baseData.value } });
     const res = await nsCommonModelPost.creteDrawPost({
-        modelId: 'openjourney',
+        modelId: selModelId.value,
         modelParams: { ...resParams.value, ...baseData.value }
     });
     props.changeTaskId && props.changeTaskId(res.data.taskId);
