@@ -15,9 +15,9 @@
             <el-form-item prop="verifyCode">
                 <el-input class="form-item" placeholder="请输入验证码" v-model="formVerify.verifyCode" ref="verifyRef">
                     <template #append>
-                        <el-button type="primary" @click="handleVerifyCode" :disabled="disabledVerify">{{
-                            verify.buttonText
-                        }}</el-button>
+                        <el-button type="primary" @click="handleVerifyCode" :disabled="disabledVerify"
+                            >{{ verify.buttonText }}<el-icon v-if="isLoading"><Loading /></el-icon
+                        ></el-button>
                     </template>
                 </el-input>
             </el-form-item>
@@ -26,8 +26,7 @@
             <span></span>
             <span @click="handleChangeLoginType">密码登录</span>
         </div>
-        <!-- <div class="login-button" @click="handleGetValidCode">获取验证码</div> -->
-        <div class="login-button" @click="handleLogin">登录</div>
+        <div class="login-button" @click="handleLogin">登录/注册</div>
     </div>
 </template>
 
@@ -35,7 +34,15 @@
 import { Lock } from '@element-plus/icons-vue';
 import { validMobile } from '@/utils';
 import { FormRules, ElMessage, FormInstance } from 'element-plus';
-import { nsGetVerificationCodePost, nsValidRegisteredPost } from '@/services/login';
+import {
+    nsGetVerificationCodePost,
+    nsValidRegisteredPost,
+    nsUserRegisterPost,
+    nsUserLoginPost
+} from '@/services/login';
+import { setStorage } from '@/utils/localStorage';
+
+const router = useRouter();
 
 const validPhone = (rule: any, value: string, callback: any) => {
     if (!value) {
@@ -46,6 +53,10 @@ const validPhone = (rule: any, value: string, callback: any) => {
         callback();
     }
 };
+
+let timer = 0;
+
+const isLoading = ref(false);
 
 const rulesVerify = reactive<FormRules>({
     phone: [{ required: true, trigger: 'blur', validator: validPhone }],
@@ -69,19 +80,22 @@ const emit = defineEmits(['swich-login-type']);
 const disabledVerify = computed(() => {
     return !formVerify.phone || verify.count <= 10;
 });
+
 const handleVerifyCode = async () => {
-    console.log(formVerify.phone);
     // 校验手机号码
     if (!validMobile(formVerify.phone)) return;
+    isLoading.value = true;
     getVerifyCode();
 };
 
+// 获取验证码逻辑
 const getVerifyCode = async () => {
     const res = await nsGetVerificationCodePost.request({ phoneNumber: parseInt(formVerify.phone, 10) });
     if (res.code === 200) {
+        isLoading.value = false;
         ElMessage.success(res.msg);
         verify.count--;
-        verify.buttonText = verify.count + ' 秒后重新获取验证码';
+        verify.buttonText = verify.count + ' 秒后重新获取';
         timer = window.setInterval(() => {
             if (verify.count <= 1) {
                 resetCount();
@@ -90,20 +104,16 @@ const getVerifyCode = async () => {
                 return;
             }
             verify.count--;
-            verify.buttonText = verify.count + ' 秒后重新获取验证码';
+            verify.buttonText = verify.count + ' 秒后重新获取';
         }, 1000);
     }
 };
 
-let timer = 0;
-// 验证码
+// 重置验证码
 const resetCount = () => {
     clearInterval(timer);
     timer = 0;
 };
-onMounted(() => {
-    resetCount();
-});
 
 // 切换登录方式
 const handleChangeLoginType = () => {
@@ -113,6 +123,38 @@ const handleLogin = async () => {
     const valid = await ruleFormRef.value?.validate();
     if (!valid) return;
     const res = await nsValidRegisteredPost.request({ phoneNumber: parseInt(formVerify.phone, 10) });
-    console.log(res);
+    if (res.data) {
+        userLogin();
+    } else {
+        userRegister();
+    }
 };
+
+// 用户注册
+const userRegister = async () => {
+    const res = await nsUserRegisterPost.request({ phoneNumber: formVerify.phone, code: formVerify.verifyCode });
+    if (res.code === 200) {
+        ElMessage.success(res.msg);
+        setStorage('X-token', res.data.token);
+        router.push({
+            path: '/'
+        });
+    }
+};
+
+// 用户登录
+const userLogin = async () => {
+    const res = await nsUserLoginPost.request({ phoneNumber: formVerify.phone, code: formVerify.verifyCode });
+    if (res.code === 200) {
+        ElMessage.success(res.msg);
+        setStorage('X-token', res.data.token);
+        router.push({
+            path: '/'
+        });
+    }
+};
+
+onMounted(() => {
+    resetCount();
+});
 </script>

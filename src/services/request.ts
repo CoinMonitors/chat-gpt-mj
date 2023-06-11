@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse, CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios';
 import { RequestEnums } from '@/services/enumerable';
 import { getStorage } from '@/utils/localStorage';
+import { ElMessage } from 'element-plus';
 const config: CreateAxiosDefaults = {
     // 设置超时时间
     timeout: RequestEnums.TIMEOUT,
@@ -19,9 +20,9 @@ const service = axios.create(config);
  */
 service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = getStorage('nid') || '';
+        const token = getStorage('X-token') || '';
         // 防止重复提交token
-        config.headers.set('Authorization', `Bearer ${token}`); // 请求头中携带token信息
+        config.headers.set('X-token', `${token}`); // 请求头中携带token信息
         return config;
     },
     (error: AxiosError) => {
@@ -40,6 +41,13 @@ service.interceptors.response.use(
         if (headers['content-type'] && headers['content-type'].split(';')[0] === 'application/octet-stream') {
             return response;
         } else {
+            console.log(response, 'response');
+            if (response.data.code !== 200) {
+                ElMessage({
+                    message: response.data.msg,
+                    type: 'error'
+                });
+            }
             return response.data;
         }
     },

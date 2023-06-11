@@ -5,7 +5,20 @@
             <span>小程序</span>
             <span>说明</span>
             <span>充值</span>
-            <span @click="handleGoLogin">Login</span>
+            <el-dropdown v-if="isLogin">
+                <span class="el-dropdown-link">
+                    {{ userName }}
+                    <el-icon class="el-icon--right">
+                        <arrow-down />
+                    </el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item @click="handleLoginOut">退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <span v-else @click="handleGoLogin">Login</span>
         </header>
         <main>
             <div class="text-info-wrap">
@@ -28,6 +41,12 @@
 </template>
 
 <script setup lang="ts">
+import { nsUserInfoPost } from '@/services/login';
+import { ArrowDown } from '@element-plus/icons-vue';
+import { getStorage, setStorage } from '@/utils/localStorage';
+
+let userName = ref('');
+let token = ref('');
 const router = useRouter();
 
 const handleGoCreation = () => {
@@ -41,6 +60,29 @@ const handleGoLogin = () => {
         path: 'user-login'
     });
 };
+
+const isLogin = computed(() => {
+    return !!token.value;
+});
+
+const getUserInfo = async () => {
+    const res = await nsUserInfoPost.request();
+    if (res.code === 200) {
+        userName.value = res.data.phone;
+    }
+};
+
+const handleLoginOut = async () => {
+    token.value = '';
+    setStorage('X-token', '');
+};
+
+onMounted(() => {
+    token.value = getStorage('X-token');
+    if (token.value) {
+        getUserInfo();
+    }
+});
 </script>
 
 <style lang="less" scoped>

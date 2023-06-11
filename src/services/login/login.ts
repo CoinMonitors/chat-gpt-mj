@@ -1,12 +1,18 @@
-import { post, Result } from '@/services/index';
+import { post, ResultData } from '@/services/index';
 
 type TParams = {
     phoneNumber: string;
-    password: string;
+    password?: string;
+    code?: string;
+};
+
+type TReturn = {
+    phone?: string;
+    token?: string;
 };
 
 export namespace nsUserLoginPost {
     export const request = async (data: TParams) => {
-        return post<Result>('/api/v1/user/login', data);
+        return post<ResultData<TReturn>>('/api/v1/user/login', data);
     };
 }

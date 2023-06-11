@@ -1,4 +1,4 @@
-import { post, Result } from '@/services/index';
+import { post, ResultData } from '@/services/index';
 
 type TParams = {
     phoneNumber: number;
@@ -6,6 +6,6 @@ type TParams = {
 
 export namespace nsValidRegisteredPost {
     export const request = async (data: TParams) => {
-        return post<Result>('/api/v1/user/hasRegistered', data);
+        return post<ResultData<boolean>>('/api/v1/user/hasRegistered', data);
     };
 }
