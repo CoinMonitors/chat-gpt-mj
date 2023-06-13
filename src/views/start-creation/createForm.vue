@@ -18,8 +18,6 @@
                     class="avatar-uploader"
                     action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
                     :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
                 >
                     <img v-if="baseData.imagePrompt" :src="baseData.imagePrompt" class="avatar" />
                     <el-icon v-else class="avatar-uploader-icon">+</el-icon>
@@ -54,7 +52,7 @@
                     :max="Number(item.maximum)"
                 />
                 <el-select v-else-if="item.controlType == 'select'" v-model="resParams[item.id]">
-                    <el-option v-for="(item, index) in item.data" :key="index" :label="item" :value="item" />
+                    <el-option v-for="(i, index) in item.data" :key="index" :label="i" :value="i" />
                 </el-select>
             </el-form-item>
             <el-form-item>

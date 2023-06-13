@@ -24,7 +24,7 @@ watchEffect(() => {
     // console.log(newTaskId, oldData, '111');
     if (!props.taskId) return;
     let timer = setInterval(async () => {
-        const res = await nsCommonModelPost.getDrawResult(props.taskId);
+        const res = await nsCommonModelPost.getDrawResult(props.taskId as string);
         console.log(res);
         if (res.data.imgList && res.data.imgList.length > 0) {
             imgList.value = res.data.imgList;
